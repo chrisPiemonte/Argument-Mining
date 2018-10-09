@@ -1,0 +1,129 @@
+\documentclass[a4paper,12pt,twoside]{book}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage[font = scriptsize, bf]{caption}
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[parfill]{parskip}
+\usepackage{amsmath, amssymb}
+\usepackage{moreverb}
+\usepackage{algorithm} %
+\usepackage{algpseudocode}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage[swapnames]{frontespizio}
+\usepackage{url}
+\usepackage{setspace}
+\usepackage{eqparbox,array}
+\usepackage{siunitx}
+\usepackage{subfigure} 
+\usepackage{wrapfig}
+\usepackage{amsthm}
+\usepackage{eurosym}
+
+\renewcommand{\algorithmiccomment}[1]{  //\emph{\textcolor{Gray}{#1}}}
+
+
+% Sistema i margini per lasciare più spazio di rilegatura
+\addtolength{\oddsidemargin}{+1,3cm} 
+\addtolength{\evensidemargin}{-1,3cm} 
+\onehalfspacing
+
+% Imposta lo stile della prima pagina del capitolo
+\fancypagestyle{plain} {
+    \fancyhead{}
+    \fancyfoot[LE,RO]{\thepage}
+    \renewcommand{\headrulewidth}{0pt}
+}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\newcommand{\compInterfacciaDB}{Data Interface}
+\newcommand{\compLoader}{Loader}
+\newcommand{\compMatrix}{Matrix Creator}
+\newcommand{\compTermsSel}{Terms Selector}
+\newcommand{\compPosition}{Position Calculator}
+\newcommand{\compClustering}{Clustering Component}
+\newcommand{\compEvolution}{Evolution Discoverer}
+
+\hyphenation{ti-me-win-dow}
+
+\graphicspath{{./Immagini/}}
+
+
+\begin{document}
+
+% frontespizio
+\begin{frontespizio}
+  \Istituzione{University of Bari ``Aldo Moro''}
+  \Logo[3.5cm]{Immagini/logo_uni.jpeg}
+  \Divisione{Department of Computer Science}
+  \Scuola{Master's Degree in Computer Science}
+  \Titolo{Argument Mining}
+  \Sottotitolo{Artificial Intelligence}
+  \NCandidato{Student}
+  \Candidato{Christopher Piemonte}
+  \NRelatore{Professor}{Professors}
+  \Relatore{Stefano Ferilli}
+  \Relatore{Andrea Pazienza}
+  \Piede{Academic year 2017-2018}
+\end{frontespizio}
+
+% \IfFileExists{Tesi-frn.pdf}{}{%
+% 	\immediate\write18{pdflatex Tesi-frn}
+% }
+
+\IfFileExists{\jobname-frn.pdf}{}{%
+\immediate\write18{pdflatex \jobname-frn}}
+
+\pagestyle{fancy}
+\fancyfoot{}
+\fancyfoot[LE,RO]{\thepage}
+\fancyhead{}
+\renewcommand{\headrulewidth}{0pt}
+\headheight = 15pt
+\frontmatter
+
+% indice
+\tableofcontents
+\afterpage{\null\newpage}
+
+
+\frontmatter	
+\mainmatter
+
+% Imposta lo stile di intestazione e piè di pagina dei capitoli
+\fancyfoot{}
+\fancyhead{}
+\fancyhead[LE,RO]{\slshape \leftmark}
+\fancyfoot[LE,RO]{\thepage}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\chaptermark}[1]{%
+\markboth{\thechapter.\ #1}{}}
+
+
+\input{Capitoli/Introduzione}
+
+\chapter{Background}
+\label{cap:capitolo1}
+\input{Capitoli/Capitolo1}
+
+\chapter{Data Sources        Review}
+\label{cap:capitolo2}
+\input{Capitoli/Capitolo2}
+
+\chapter{Conversational Interfaces in Finance}
+\label{cap:capitolo3}
+\input{Capitoli/Capitolo3}
+
+\chapter{Critical analysis}
+\label{cap:capitolo4}
+\input{Capitoli/Conclusione}
+
+
+% \chapter{Critical analysis}
+% \input{Capitoli/Conclusioni}
+
+
+\bibliographystyle{plain}
+\bibliography{Bibliografia}
+
+\end{document}
