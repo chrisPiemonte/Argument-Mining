@@ -1,3 +1,3 @@
-# Analysis of the state of the art on using natural interfaces to improve the user experience (UX) in the financial field
+# Argument Mining
 
 Read it on [Overleaf](https://www.overleaf.com/read/qhhnggycrkfk) !
