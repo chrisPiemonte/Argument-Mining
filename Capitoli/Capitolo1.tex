@@ -105,6 +105,12 @@ Per quanto riguarda i cicli presenti in un argumentation framework, valgono le s
 \begin{prp}. Se un argumentation framework $\mathcal{AF = ⟨A,R⟩}$ non ha alcun ciclo ed $\mathcal{A = ∅}$, allora $\mathcal{AF}$ ha una singola estensione che è preferred, completa e grounded.
 \end{prp}
 
+\begin{figure}
+    \includegraphics[width=\linewidth]{Immagini/semantics-relationships.png}
+    \caption{Relazioni tra le semantiche.}
+    \label{fig:baf-graph1}
+\end{figure}
+
 
 \subsection{Bipolar Argumetation Framework}
 Una estensione dell'argumentation framework di Dung considera il fatto che tra due argomenti non esiste solo una relazione di attacco, ma può esistere anche una relazione di supporto. La distinzione in due tipi di relazioni opposte tra di loro suggerisce la nozione di bipolarismo, ovvero l’esistenza di due tipi di informazioni indipendenti che hanno natura diametralmente opposta e che rappresentano forze di repulsione. Il concetto di bipolarismo è importante quando si devono prendere decisioni in quanto è possibile distinguere informazioni a supporto di una decisione, ed informazioni che la contrastano [1]. Si descrive, di seguito, formalmente il bipolar argumentation framework.
@@ -434,8 +440,6 @@ In generale, l'output delle analisi automatiche svolte su grandi quantità di da
 
 Essendo un campo di ricerca emergente, l'Argumentation Mining soffre di una carenza di dataset etichettati, che risultano cruciali per la progettazione, l'apprendimento e la valutazione di algoritmi. 
 
-
-
 Boltuzic  and Snajder \cite{boltuvzic2014} evidenziano \textit{"a differenza dei dibattiti o di altre fonti di argomentazione più formali, gli argomenti forniti dagli utenti, se esistenti, sono meno formali, ambigui, vaghi, impliciti o spesso semplicemente mal formulati"}. Bentahar, Moulin, e Be langer \cite{bentahar2010} propongono una tassonomia dei modelli di argomentazione che è suddivisa orizzontalmente in tre categorie: modelli a micro-level, modelli a macro-level e modelli retorici.
 
 \begin{itemize}
@@ -458,4 +462,4 @@ La classificazione dei componenti argomentativi mira a identificare il ruolo (ad
 Palau and Moens \cite{palau2009argumentation} riportano diversi esperimenti per la classificazione di componenti di argomenti. Si concentrano esclusivamente sul settore legale e, in particolare, sulle cause giudiziarie della Corte europea dei diritti dell'uomo (CEDU). Considerano la classificazione dei componenti di argo come due passaggi consecutivi. Utilizzano un modello di maximum-entropy per l'identificazione di unità testuali argomentative prima di identificare il ruolo descrittivo (conclusioni e premessa) dei componenti identificati utilizzando una Support Vector Machine. 
 
 \subsubsection{Identificazione delle strutture di argomentazione}
-Attualmente, ci sono solo pochi approcci finalizzati all'identificazione delle strutture di argomentazione. Ad esempio, l'approccio proposto da Mochales-Palau e Moens \cite{palau2009argumentation} si basa su una grammatica Context-Free (CFG) creata manualmente e sulla presenza di marker di discorso per identificare una struttura ad albero tra i componenti degli argomenti. Tuttavia, l'approccio si basa sulla presenza di indicatori di discorso e sfrutta le regole create manualmente. Pertanto, non contiene argomenti mal formattati e non è in grado di identificare strutture di argomentazione implicite che sono comuni nel discorso argomentativo. Un altro approccio è stato presentato da Cabrio e Villata \cite{cabrio2012combining} identificando le relazioni tra gli argomenti di una piattaforma di dibattito online per identificare gli argomenti accettati e sostenere le interazioni nei dibattiti online. In contrasto con il lavoro di Mochales-Palau e Moens \cite{palau2009argumentation}, questo approccio mira a identificare le relazioni tra argomenti (macro-livello) e non tra i componenti dell'argomento (micro-livello).
+Attualmente, ci sono solo pochi approcci finalizzati all'identificazione delle strutture di argomentazione. Ad esempio, l'approccio proposto da Palau e Moens \cite{palau2009argumentation} si basa su una grammatica Context-Free (CFG) creata manualmente e sulla presenza di marker di discorso per identificare una struttura ad albero tra i componenti degli argomenti. Tuttavia, l'approccio si basa sulla presenza di indicatori di discorso e sfrutta le regole create manualmente. Pertanto, non contiene argomenti mal formattati e non è in grado di identificare strutture di argomentazione implicite che sono comuni nel discorso argomentativo. Un altro approccio è stato presentato da Cabrio e Villata \cite{cabrio2012combining} identificando le relazioni tra gli argomenti di una piattaforma di dibattito online per identificare gli argomenti accettati e sostenere le interazioni nei dibattiti online. In contrasto con il lavoro di Palau e Moens \cite{palau2009argumentation}, questo approccio mira a identificare le relazioni tra argomenti (macro-livello) e non tra i componenti dell'argomento (micro-livello).
