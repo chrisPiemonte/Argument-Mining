@@ -64,18 +64,28 @@ che restituirà quindi un risultato compreso $\in [-1, 1]$.
 
 \subsection {Twitter} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Lo scraping del sito Web è vietata dal Twitter Terms of Service, quindi l'unico modo rimane l'accesso tramite API. Per accedere alla piattaforma delle API di twitter è necessario creare un Twitter developer account ed in seguito creare dal portale una applicazione nella quale si dichiara lo scopo dello dell'accesso ai contenuti e si richiedono i relativi permessi. Una volta ottenuta l'approvazione, vengono rilasciati delle credenziali per l'autenticazione agli endpoint, ovvero:
+Lo scraping del sito Web è vietato dal Twitter Terms of Service, quindi l'estrazione della conversazione avviene tramite API. Per accedere alla piattaforma delle API di twitter è necessario creare un Twitter developer account ed in seguito creare dal portale una applicazione nella quale si dichiara lo scopo dello dell'accesso ai contenuti e si richiedono i relativi permessi. Una volta ottenuta l'approvazione, vengono rilasciati delle credenziali per l'autenticazione agli endpoint. Gli step necessari sono:
+  
 
-\begin{itemize}
-    \item consumer key
-    \item consumer secret
-    \item access token
-    \item access token secret
+\begin{itemize}  
+    \item Andare su {\color{blue}\underline{\href{https://.dev.twitter.com}{Twitter Developers Site}}}
+    \item Login con account di Twitter
+    \item Andare su "My Applications"
+    \item Creare una nuova applicazione
+    \item Compilare con i dati richiesti
+    \item Creare l'Access Token
+    \item Scegliere il tipo di permessi
+    \item Prendere nota delle impostazioni OAuth
+    \item Infine, tutto il necessario per l'estrazione della conversazione è: \begin{itemize}
+        \item Consumer key
+        \item Consumer secret
+        \item Access token
+        \item Access token secret
+    \end{itemize}
 \end{itemize}
 
-I contenuti messi a disposizione sono i Tweet pubblici, cercando parole chiave specifiche attraverso le Search API o chiedendo esempi di Tweet a determinati account attraverso le User API. Inoltre è possibile richiedere tweet specifici conoscendone l'id.
+I contenuti messi a disposizione sono i Tweet pubblici, reperiti cercando parole chiave specifiche attraverso le Search API o chiedendo esempi di Tweet a determinati account attraverso le User API. Inoltre è possibile richiedere tweet specifici conoscendone l'id.
 
-\subsubsection{Overview}
 Al momento non è disponibile l'accesso alle conversazioni, la richiesta di tweet tramite le Search API o le User API restituisce solo un sottoinsieme dei tweet ed inoltre c'è un limite al numero di richieste giornaliere. Questo rende difficile cercare di ricostruire le conversazioni dai tweet restituiti dalla query. 
 
 \subsubsection{Ricostruire la conversazione}
@@ -85,12 +95,12 @@ Fra gli attributi presenti nei tweet è presente il campo \textbf{"in reply to s
 \begin{itemize}
     \item trovare il tweet a cui quello corrente sta rispondendo, quindi ripetere la procedura per ogni tweet con questo attributo avvalorato in modo da ottenere delle sequenze di tweet.
     \item Una volta create le sequenze di tweet, se queste contengono elementi in comune, unire le sequenze creando un grafo della conversazione.
-    \item Valutare la bontà della conversazione ottenuta mediante euristiche come il numero di elementi (tweet) nel grafo, la presenza di diramazioni o il numero di utenti distinti.
+    \item Valutare la bontà della conversazione ottenuta mediante euristiche come ad esempio il numero di nodi (tweet) nel grafo della conversazione, la presenza di diramazioni o il numero di utenti distinti, in modo da poter scegliere la conversazione "migliore".
 \end{itemize}
 
-Quindi costruire grafo orientato della conversazione $\mathcal{G = ⟨V, E⟩}$, dove i nodi $v \in \mathcal{V}$ sono tweet ed esiste un arco $(v_1,v_2) \in \mathcal{E}$ se l'attributo \textbf{"in reply to status id"} di $v_1$ contiene l'id di $v_2$.
+Quindi costruire grafo orientato e pesato della conversazione $\mathcal{G = ⟨V, E⟩}$, dove i nodi $v \in \mathcal{V}$ sono tweet ed esiste un arco $(v_1,v_2) \in \mathcal{E}$ se l'attributo \textbf{"in reply to status id"} di $v_1$ contiene l'id di $v_2$, pesato come descritto in \ref{subsection:weight}.
 
-Tuttavia le API forniscono l'accesso solo ad un campione dei tweet, quindi potrebbe non essere possibile recuperare dei tweet quando si tenta di ricostruire la conversazione. Un'altra limitazione proviene dal numero di tweet iniziale che è possibile ottenere in risposta alla query, che risulta essere massimo 1000, dei quali è necessario filtrare i tweet che contengono il campo \textbf{"in reply to status id"} avvalorato, numero che può variare di molto (di solito circa il 10\%). Inoltre le conversazioni risultano quasi sempre essere sequenze lineari di nodi, ovvero grafi con archi in entrata $\leq 1$ ed archi in uscita $\leq 1$ come rappresentato in figura \ref{fig:comment-twitter} ed il grafo ricostruito cambia in base al momento della richiesta.
+Tuttavia le API forniscono l'accesso solo ad un campione dei tweet, quindi potrebbe non essere possibile recuperare dei tweet quando si tenta di ricostruire la conversazione. Un'altra limitazione proviene dal numero di tweet iniziale che è possibile ottenere in risposta alla query, che risulta essere massimo 1000, dai quali è necessario filtrare i tweet che non contengono il campo \textbf{"in reply to status id"} avvalorato(di solito circa il 80\%). Inoltre i risultati ottenuti cambiano in modo notevole al variare della query e del momento in cui viene effettuata la richiesta. La maggior parte delle volte le conversazioni risultano essere sequenze lineari di nodi, ovvero grafi con archi in entrata $\leq 1$ ed archi in uscita $\leq 1$ come rappresentato in figura \ref{fig:comment-twitter}.
 
 \begin{figure}[ht]
     \includegraphics[width=\linewidth]{Immagini/twitter.png}
@@ -99,11 +109,11 @@ Tuttavia le API forniscono l'accesso solo ad un campione dei tweet, quindi potre
 \end{figure}
 
 \subsubsection {Utenti come nodi}
-Un altro approccio utilizzato, indipendente dalle funzionalità messe a disposizione da Twitter o dalle Twitter API, consiste nel considerare gli utenti in una conversazione come nodi e creare un arco orientato tra due utenti se esiste almeno un tweet di risposta tra i due, più formalmente: costruire un grafo orientato $\mathcal{G = ⟨V, E⟩}$, dove i nodi $v \in \mathcal{V}$ sono utenti ed esiste un arco $(v_1,v_2) \in \mathcal{E}$ se esiste almeno un tweet con utente $v_1$ e con l'attributo \textbf{"in reply to status id"} contenente l'id di un tweet appartenente all'utente $v_2$.
+Un altro approccio è quello descritto in sezione \ref{subsection:grafo_utenti}, ma con la differenza che qui non c'è l'albero della conversazione ma ci sono i 1000 tweet restituiti dalla richiesta API più eventuali altri tweet ottenuti seguendo il campo \textbf{"in reply to status id"}. Quindi viene costruito il grafo orientato pesato $\mathcal{G = ⟨V, E⟩}$, dove i nodi $v \in \mathcal{V}$ sono utenti ed esiste un arco $(v_1,v_2) \in \mathcal{E}$ se esiste almeno un tweet con utente $v_1$ e con l'attributo \textbf{"in reply to status id"} contenente l'id di un tweet appartenente all'utente $v_2$, pesato come descritto in \ref{subsection:weight}.
 
 Anche qui si ripropongono i problemi presentati nella sezione precedente \ref{ricostruire-conv}, tuttavia il grafo risultante presenta nodi con archi in entrata $\geq 1$ ed archi in uscita $\geq 1$, come rappresentato in figura \ref{fig:users-twitter}.
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \includegraphics[width=\linewidth]{Immagini/twitter-users.png}
     \caption{Rappresentazione del grafo della conversazione, utilizzando come nodi gli utenti.}
     \label{fig:users-twitter}
