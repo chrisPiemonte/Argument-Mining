@@ -7,15 +7,22 @@
 
 %************************************************
 
-
-robe robe robe
+% sviluppi futuri
+L'implementazione del mining degli argumentation framework e del sistema prolog per il ranking delle estensioni presentano molti margini di miglioramento, fra i quali possiamo distinguere in 
 
 
 \section{Mining}
 \label{section:ranking}
+Estrarre l'albero della conversazione o il grafo degli utenti può essere ampliato alla analisi di altri social media od addirittura all'estrazione di argomenti da altre fonti web o no. Un'idea potrebbe essere trovare un fonte dati con delle caratteristiche per le quali la creazione del grafo sia implicita nella struttura degli argomenti. I social media presentano una grande opportunità però per motivi di visualizzazione spesso impongono dei vincolo nella struttura dei commenti. 
 
-\subsection {Aggiungere altre fonti} 
 \subsection {Migliorare generazioni pesi delle relazioni} 
+I pesi delle relazioni sono in funzione del sentiment e della similarità dei testi dei due commenti che uniscono. In questo caso è stato utilizzato vader \cite{hutto2014vader} come sentiment analyzer perchè trainato sui social network, ma questo potrebbe cambiare in base alla fonte dati.
+
+La similarità invece è calcolata tramite la creazione di word embedding delle parole attraverso l'algoritmo word2vec \cite{} ed in seguito attraverso la creazione di embedding per l'intero testo attraverso la medie degli embedding delle parole. Questo porta a considerare simili testi che contengono parole simili attraverso la distributional semantic ovvero utilizzate in contesti simili.
+
+L'introduzi
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -31,6 +38,8 @@ robe robe robe
 \subsubsection {Node related}
 \subsubsection {Graph related}
 \subsubsection {Testo dei nodi related}
+
+
 
 
 

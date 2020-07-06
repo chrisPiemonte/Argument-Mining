@@ -5,29 +5,48 @@
 %************************************************
 
 %************************************************
-Segue un overview del metodo generale utilizzato, in sezione \ref{section:approcci} e degli approcci specifici, in sezione \ref{section:data_sources}, per ogni Social Media in esame da cui è stato estratto un argumentation framework.
+
+% Mining dai social media
+
+Segue un overview del metodo utilizzato in sezione \ref{section:approcci} e degli approcci specifici in sezione \ref{section:data_sources}, per ogni Social Media in esame da cui è stato estratto un argumentation framework.
 
 \section{Metodologie di Mining}
 \label{section:approcci}
-L'estrazione di argomenti prende in esame la struttura che i commenti in uno specifico Social Network possono assumere. In tutte le fonti analizzate un commento può considerarsi una risposta ad un solo altro commento, questo restituisce una struttura ad albero che, partendo dal nodo radice, si dirama attraverso relazioni di risposta. Di seguito viene descritta l'estrazione dell'albero dei commenti in sezione \ref{subsection:albero_commenti} ed un tentativo di estrazione di un grafo considerando come nodi gli utenti in sezione \ref{subsection:grafo_utenti}.
+L'estrazione di argomenti è caratterizzata dalla struttura che i commenti in uno specifico Social Network possono assumere. In tutte le fonti analizzate un commento può considerarsi una risposta ad un solo altro commento, formando una struttura ad albero che, partendo dal nodo radice, si dirama attraverso relazioni di risposta, di solito con profondità massima imposta a priori dallo specifico social media. Di seguito viene descritta l'estrazione dell'albero dei commenti in sezione \ref{subsection:albero_commenti} ed un tentativo di estrazione di un grafo considerando come nodi gli utenti in sezione \ref{subsection:grafo_utenti}.
 
 \subsection{Albero dei commenti}
 \label{subsection:albero_commenti}
-Per la costruzione dell'albero dei commenti serve costruire un grafo orientato della conversazione $\mathcal{G = ⟨V, E⟩}$, dove i nodi $v \in \mathcal{V}$ sono commenti ed esiste un arco $(v_1,v_2) \in \mathcal{E}$ se il commento $v_1$ risponde al commento $v_2$.
+Per la costruzione dell'albero dei commenti serve costruire un grafo orientato della conversazione $\mathcal{G = ⟨V, E⟩}$, dove i nodi $v \in \mathcal{V}$ sono i commenti ed esiste un arco $(v_1,v_2) \in \mathcal{E}$ se il commento $v_1$ risponde al commento $v_2$.
 
 La struttura dell'albero può variare in base alla sorgente dei dati in esame, ad esempio alcuni Social Network pongono un limite al numero di livelli dell'albero, principalmente per motivi di presentazione.
-Estrarre delle semantiche da Argumentation Framework ricavati dall'albero della conversazione equivale ad estrarre i commenti che soddisfano i requisiti delle varie semantiche.
+
+Estrarre delle semantiche da Argumentation Framework ricavati dall'albero della conversazione equivale ad estrarre i sotto-insiemi di commenti che ne soddisfano i requisiti.
+
+
+\begin{figure}[h]
+    \includegraphics[width=\linewidth]{Immagini/comments-tree.png}
+    \caption{Esempio di albero dei commenti.}
+    \label{fig:comments-tree}
+\end{figure}
 
 \subsection{Grafo degli utenti}
 \label{subsection:grafo_utenti}
-Invece di considerare i commenti come argomenti, può essere considerato argomento ogni utente nella conversazione, e creare archi nel Argumentation Framework risultante tra due utenti se un utente ha risposto almeno una volta ad un altro utente. Più formalmente costruire un grafo orientato $\mathcal{G = ⟨V, E⟩}$, dove i nodi $v \in \mathcal{V}$ sono utenti ed esiste un arco $(v_1,v_2) \in \mathcal{E}$ se l'utente $v_1$ ha risposto almeno una volta all'utente $v_2$.
+Invece di considerare i commenti come argomenti, può essere considerato argomento ogni utente nella conversazione, e creare archi tra due utenti se un utente ha risposto almeno una volta ad un altro utente. Più formalmente costruire un grafo orientato $\mathcal{G = ⟨V, E⟩}$, dove i nodi $v \in \mathcal{V}$ sono utenti ed esiste un arco $(v_1,v_2) \in \mathcal{E}$ se l'utente $v_1$ ha risposto almeno una volta all'utente $v_2$.
 
 In questo modo se ogni commento nell'albero della conversazione ha un utente univoco, l'Argumentation Framework risultante sarà comunque un albero, mentre se un utente risponde ad almeno due (o più) utenti il suo nodo nell'$AF$ avrà due (o più) archi uscenti, e se più commenti dello stesso utente vengono risposti da due (o più) utenti, il suo nodo nell'$AF$ avrà due (o più) archi entranti.
+
 Estrarre delle semantiche da Argumentation Framework ricavati dal grafo degli utenti equivale ad estrarre gli utenti che soddisfano i requisiti delle varie semantiche.
+
+
+\begin{figure}[h]
+    \includegraphics[width=\linewidth]{Immagini/users-graph.png}
+    \caption{Esempio di grafo degli utenti.}
+    \label{fig:users-graph}
+\end{figure}
 
 \subsection{Pesi delle relazioni}
 \label{subsection:weight}
-Le relazioni di risposta nell'albero dei commenti vengono pesate in base alla combinazione di similarità e sentiment dei commenti della relazione.
+Le relazioni di risposta nell'albero dei commenti possono essere pesate in base alla combinazione di similarità e sentiment dei testi dei commenti della relazione.
 
 \subsubsection{Similarity}
 La \textit{similarity} è ricavata attraverso l'embedding dei testi dei commenti ricavati da un modello di Word2Vec pre-addestrato sulle news di Google \cite{googlenewsmodel}. Gli Word Embedding sono un insieme di tecniche per la rappresentazione vettoriale delle parole di un vocabolario, introdotti per la prima volta in \cite{mikolov2013distributed}, i quali sono capaci di catturare il contesto delle parole all'interno di un documento attraverso la \textit{distributional semantics}. I vettori risultanti codificano proprietà linguistiche nello spazio vettoriale e nella distanza tra di essi, ad esempio è possibile fare analogie come mostrato in figura \ref{fig:analogy}.
@@ -45,7 +64,7 @@ $$cosineSimilarity(c_1, c_2) = \frac{c_1 \cdot c_2}{||c_1|| ||c_2||}$$
 che restituirà quindi un risultato compreso $\in [0, 1]$.
 
 \subsubsection{Sentiment}
-La \textit{sentiment analysis} si riferisce all'utilizzo dell'elaborazione del linguaggio naturale per identificare, estrarre e quantificare sistematicamente informazioni soggettive. L'analisi del sentiment è ampiamente applicata per analizzare social media per una varietà di applicazioni. Il valore è ricavato attraverso VADER \cite{hutto2014vader} uno strumento di analisi del sentimento basato su regole che è ideato specificamente per individuare la polarità nei testi espressi nei social media, ad esempio:
+La \textit{sentiment analysis} si riferisce all'utilizzo dell'elaborazione del linguaggio naturale per identificare, estrarre e quantificare sistematicamente informazioni soggettive. L'analisi del sentiment è ampiamente applicata per analizzare social media per una varietà di applicazioni. Il valore è ricavato attraverso VADER \cite{hutto2014vader} uno strumento di analisi del sentiment basato su regole che è ideato specificamente per individuare la polarità nei testi espressi nei social media, ad esempio:
 
     $$sentiment(\ "\textbf{:)}" \ ) = 0.4588$$
     $$sentiment(\ "\textbf{:(}" \ ) = -0.4404$$
@@ -58,6 +77,8 @@ Il peso finale dell'arco è ottenuto prendendo in considerazione la similarità 
 $$weight = similarity_{c_1 c_2} \cdot sentiment_{c_1} \cdot sentiment_{c_2}$$
 
 che restituirà quindi un risultato compreso $\in [-1, 1]$.
+
+Dal segno del peso finale è possibile dedurre il tipo di relazione per Bipolar AF e per Bipolar Weighted AF. Sarà creata una relazione di \textbf{supporto} se il segno sarà positivo, di \textbf{attacco} altrimenti. 
 
 \section{Analisi dei Social Media}
 \label{section:data_sources}
@@ -129,18 +150,65 @@ Anche qui si ripropongono i problemi presentati nella sezione precedente \ref{ri
 
 
 \subsection {Stackoverflow} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Attraverso la libreria Stack API \cite{stackapi} è possibile fare richieste, tramite pyhton, alle API di stackOverflow senza necessità di registrarsi.
 
-\begin{itemize}
-    \item create account at https://stackapps.com/
-    \item register an app
-    \item b
-\end{itemize}
-
-\subsubsection {Overview}
 \subsubsection {API}
 
+\begin{lstlisting}[language=Python, caption=Stack API in Python]
+site = StackAPI('stackoverflow')
+
+# Richiedere una specifica domanda
+site.fetch(
+    'questions/<q_id>', 
+    order='desc', 
+    sort='votes', 
+    filter='withbody')
+    
+# Richiedere tutte le risposte ad una domanda
+site.fetch(
+    'questions/<q_id>/answers', 
+    order='desc', 
+    sort='votes', 
+    filter='withbody')
+
+#  Richiedere tutti commenti ad una risposta   
+site.fetch(
+    'answers/<a_id>/comments', 
+    order='desc', 
+    sort='votes', 
+    filter='withbody')
+\end{lstlisting}
+
+Di seguito è riportato un esempio per utilizzare le Stack API. Per prima cosa bisogna creare un oggetto StackAPI con il dominio di riferimento, in questo caso stackoverflow. Una volta creato è possibile:
+
+\begin{itemize}
+    \item Richiedere una specifica domanda, conoscendone l'id (reperibile dall'URL)
+    \item Richiedere tutte le risposte ad una domanda, conoscendo l'id della domanda
+    \item Richiedere tutti commenti ad una risposta, conoscendone l'id
+\end{itemize}
+
 \subsubsection {Commenti}
+
+Per costruire l 'albero dei commenti è necessario:
+
+\begin{itemize}
+    \item \textbf{Nodo radice}: scegliere una domanda da cui costruire il nodo radice
+    \item \textbf{Primo livello}: richiedere tutte le risposte a quella domanda
+    \item \textbf{Secondo livello}: richiedere tutti commenti ad ogni risposta
+\end{itemize}
+
+Stackoverflow permette di costruire un albero con profondità massima di 3 livelli, in quanto ogni domanda può avere delle risposte e queste possono avere dei commenti.
+ 
+
 \subsubsection {Utenti}
+Per costruire il grafo degli utenti è necessario:
+
+\begin{itemize}
+    \item \textbf{Costruire l'albero dei commenti}: tramite il procedimento descritto nella sezione precedente
+    \item \textbf{Unire i nodi}: unire i nodi che hanno lo stesso utente
+\end{itemize}
+
+Nelle domande analizzate è capitato raramente di riuscire ad unire nodi nell'albero dei commenti, raramente un utente fornisce più risposte alla stessa domanda. Può capitare invece che lo stesso utente fornisca più commenti. 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -151,18 +219,71 @@ Anche qui si ripropongono i problemi presentati nella sezione precedente \ref{ri
 
 \subsection {Reddit} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+Attraverso la libreria PRAW \cite{praw} è possibile fare richieste, tramite pyhton, alle API di Reddit. Necessario registrarsi per ricevere il \textbf{CLIENT ID} ed il \textbf{CLIENT SECRET}. i passi da seguire sono:
+
 \begin{itemize}
-    \item create account at 
-    \item register an app
-    \item b
+    \item \textbf{Reddit Account}:	creare un account all'indirizzo reddit.com.
+    \item \textbf{Client ID e Client Secret}: seguendo le istruzioni riportate in \url{https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example#first-steps}
+    \item \textbf{User Agent}:	Creare un user agent univoco in modo da permettere Reddit a determinare la fonte delle richieste.
 \end{itemize}
 
-
-\subsubsection {Overview}
 \subsubsection {API}
 
+\begin{lstlisting}[language=Python, caption=Stack API in Python]
+reddit = praw.Reddit(
+    client_id='XXXXXXXXXXXXXX',
+    client_secret='XXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    user_agent=' 'linux:com.example.argumentation:v0.0.1 (by /u/anzianotti)'
+)
+
+# Richiedere una specifica domanda
+reddit.submission(submissionId)
+
+# Esapndere i risultati inizialmente restituiti
+submission.comments.replace_more(limit=None)
+
+# Prendere i commenti
+comments = submission.comments
+    
+    
+\end{lstlisting}
+
+Di seguito è riportato un esempio per utilizzare le API di reddit tramite PRAW. Per prima cosa bisogna creare un oggetto reddit con il \textbf{client id}, il \textbf{client secret} e l'\textbf{user agent}, in questo caso stackoverflow. Una volta creato è possibile:
+
+\begin{itemize}
+    \item Richiedere una specifica submission, conoscendone l'id (reperibile dall'URL)
+    \item Espandere i risultati facendo restituire anche i commenti nascosti oltre un certo livello (da browser sono i commenti disponibili cliccando sul tasto "view more comments")
+    \item Recuperare la lista degli oggetti commento
+\end{itemize}
+
 \subsubsection {Commenti}
+Per costruire l 'albero dei commenti è necessario:
+
+\begin{itemize}
+    \item \textbf{Nodo radice}: scegliere la submission contenente la domanda da cui costruire il nodo radice
+    \item \textbf{Esplorare la submission}: Esplorare la submission costruendo l'albero
+\end{itemize}
+
+Reddit non pone limiti alla profondità dei commenti, di conseguenza l'albero non ha dimensioni prefissate
+
+\begin{figure}
+    \includegraphics[width=\linewidth]{Immagini/reddit-comment-nesting.png}
+    \caption{Esempio di reddit submission per trovare la profondità massima dei commenti.}
+    \label{fig:reddit-comment-nesting}
+\end{figure}
+
+
 \subsubsection {Utenti}
+
+Per costruire il grafo degli utenti è necessario:
+
+\begin{itemize}
+    \item \textbf{Costruire l'albero dei commenti}: tramite il procedimento descritto nella sezione precedente
+    \item \textbf{Unire i nodi}: unire i nodi che hanno lo stesso utente
+\end{itemize}
+
+Il risultato dipende dalla submission in analisi, ma le conversazioni molto polarizzate invogliano gli utenti a commentare più volte, andando ad unire più nodi nell'albero dei commenti.
+
 
 % Fatti generati argument/1, attac- k/2, support/2, rel_weight/3
 

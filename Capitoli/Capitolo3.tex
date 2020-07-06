@@ -7,15 +7,18 @@
 
 %************************************************
 
-robe robe robe
+% ranking extensions
 
-\section {Generazione estensioni} 
 
-\subsection {Overview}
-\subsection {API}
+\section {Generazione estensioni}
+La generazione delle estensioni all'interno di un grafo di argomenti equivale all'estrarre sottoinsiemi di nodi coerenti fra di loro secondo i vincoli imposta dalla semantica. Il mining dei social media permette di mappare gli in questo dominio i commenti o gli utenti, estraendo quindi sottoinsiemi di questi che soddisfano i requisiti. 
 
-\subsection {Commenti}
-\subsection {Utenti}
+Dipendentemente dal tipo di conversazione estratta i gruppi di commenti/utenti coerenti fra di loro possono avere diverse interpretazioni. All'interno di un dibattito politico potrebbero rappresentare l'accordo o il disaccordo con un certo argomento portato dal politico, in un post su di una serie tv potrebbe rappresentare il gradimento verso un 
+
+\subsection {Implementazione}
+Per l'implementazione delle estensioni è stato utilizzato il framework \textit{Arguer} \cite{}. Il sistema implementato in Prolog permette di importare Argumentation Framework sotto forma di basi di conoscenza prolog e calcolare le semantiche. 
+
+è stato scelto di utilizzare il sistema arguer in quanto era già presente come framework per il calcolo delle semantiche e l'implementazione di un tale sistema da zero avrebbe richiesto effort per un altro progetto.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -24,12 +27,24 @@ robe robe robe
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section {Ranking delle estensioni}
+La generazione delle semantiche non restituisce una classifica delle estensioni restituite, tutti i sottoinsiemi che soddisfano i vincoli sono egualmente importante. Conoscendo il dominio però, quindi collocando l'interpretazione degli argomenti in un dato dominio guidati da una determinata applicazione, potrebbe essere utile dare una priorità a certe estensioni in base a delle caratteristiche, dei suoi nodi o della lunghezza del sottoinsieme ad esempio. 
+
+Le metriche posso essere puramente graph-based o considerare anche il testo del commento. Fra le graph based quelle implementate sono:
+
+\begin{itemize}
+    \item \textbf{Distanza fra i nodi del sottoinsieme}:
+
+    \item \textbf{indegree nel grafo di difesa}:
+
+    \item \textbf{closeness nel grafo di difesa}:
+
+    \item \textbf{indegree nel grafo di attacchi}:
+
+    \item \textbf{closeness nel grafo ddi attacchi}:
+\end{itemize}
 
 
-\subsection {Overview}
-\subsection {API}
+Le metriche possono variare in base logiche di business e in futuro possono considerare anche i testi dei commenti.
 
-\subsection {Commenti}
-\subsection {Utenti}
 
 
