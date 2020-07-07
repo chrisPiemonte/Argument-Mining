@@ -11,14 +11,14 @@
 
 
 \section {Generazione estensioni}
-La generazione delle estensioni all'interno di un grafo di argomenti equivale all'estrarre sottoinsiemi di nodi coerenti fra di loro secondo i vincoli imposta dalla semantica. Il mining dei social media permette di mappare gli in questo dominio i commenti o gli utenti, estraendo quindi sottoinsiemi di questi che soddisfano i requisiti. 
+La generazione delle estensioni all'interno di un grafo di argomenti equivale all'estrarre sottoinsiemi di nodi coerenti fra di loro secondo i vincoli imposta dalla semantica. Il mining dei social media permette di mappare in questo dominio i commenti o gli utenti, estraendo quindi sottoinsiemi di questi che soddisfano i requisiti. 
 
-Dipendentemente dal tipo di conversazione estratta i gruppi di commenti/utenti coerenti fra di loro possono avere diverse interpretazioni. All'interno di un dibattito politico potrebbero rappresentare l'accordo o il disaccordo con un certo argomento portato dal politico, in un post su di una serie tv potrebbe rappresentare il gradimento verso un 
+Dipendentemente dal tipo di conversazione estratta i gruppi di commenti/utenti coerenti fra di loro possono avere diverse interpretazioni. All'interno di un dibattito politico potrebbero rappresentare l'accordo o il disaccordo con un certo argomento portato dal politico, in un post su di una serie tv potrebbe rappresentare il gradimento verso un particolare personaggio o sottotrama. 
 
 \subsection {Implementazione}
 Per l'implementazione delle estensioni è stato utilizzato il framework \textit{Arguer} \cite{}. Il sistema implementato in Prolog permette di importare Argumentation Framework sotto forma di basi di conoscenza prolog e calcolare le semantiche. 
 
-è stato scelto di utilizzare il sistema arguer in quanto era già presente come framework per il calcolo delle semantiche e l'implementazione di un tale sistema da zero avrebbe richiesto effort per un altro progetto.
+È stato scelto di utilizzare il sistema Arguer in quanto era già presente come framework per il calcolo delle semantiche e l'implementazione di un tale sistema da zero avrebbe richiesto lo l'impegno tale da costituire un progetto a se stante.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -27,24 +27,22 @@ Per l'implementazione delle estensioni è stato utilizzato il framework \textit{
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section {Ranking delle estensioni}
-La generazione delle semantiche non restituisce una classifica delle estensioni restituite, tutti i sottoinsiemi che soddisfano i vincoli sono egualmente importante. Conoscendo il dominio però, quindi collocando l'interpretazione degli argomenti in un dato dominio guidati da una determinata applicazione, potrebbe essere utile dare una priorità a certe estensioni in base a delle caratteristiche, dei suoi nodi o della lunghezza del sottoinsieme ad esempio. 
+La generazione delle semantiche si limita a verificare i requisiti imposti dalla semantica ed a restituire un insieme di insiemi di nodi. Tutti i sottoinsiemi che soddisfano i vincoli sono egualmente importante. Collocando l'interpretazione degli argomenti in un dato dominio e guidati da una determinata applicazione, potrebbe essere utile dare una priorità a certe estensioni in base a delle metriche dei suoi nodi ad esempio o alla lunghezza del sottoinsieme. 
 
-Le metriche posso essere puramente graph-based o considerare anche il testo del commento. Fra le graph based quelle implementate sono:
+Le metriche possono prendere in considerazione diversi aspetti dell argumentation framework, dalla topologia del grafo al testo del commento. Fra le graph based quelle implementate sono:
 
 \begin{itemize}
-    \item \textbf{Distanza fra i nodi del sottoinsieme}:
+    \item \textbf{Distanza fra i nodi del sottoinsieme}: calcolata come la distanza fra tutte le possibili coppie all'interno della estensione (divisa per la lunghezza della estensione).
 
-    \item \textbf{indegree nel grafo di difesa}:
+    \item \textbf{indegree nel grafo di difesa}: un nodo $\mathcal{V}$ è difeso da un altro nodo $\mathcal{U}$ se esiste un altro nodo $\mathcal{W}$ tale che $\mathcal{W}$ attacca $\mathcal{V}$ e $\mathcal{U}$ attacca $\mathcal{W}$. Mentre per BAF e BWAF oltre la relazione di difesa è considerata anche la relazione di supporto.
 
-    \item \textbf{closeness nel grafo di difesa}:
+    \item \textbf{closeness nel grafo di difesa}: valore attribuito ad un nodo calcolando la media di tutti gli shortest path con sorgente quel nodo e destinazione gli altri nodi.
 
-    \item \textbf{indegree nel grafo di attacchi}:
+    \item \textbf{indegree nel grafo di attacchi}: per questa metrica vengono considerati solo le relazione di attacco, andando a considerare migliori i nodi con indegree basso.
 
-    \item \textbf{closeness nel grafo ddi attacchi}:
+    \item \textbf{closeness nel grafo di attacchi}: stesso valore descritto sopra ma calcolato nel grafo considerando solo le relazioni di attacco.
 \end{itemize}
 
 
-Le metriche possono variare in base logiche di business e in futuro possono considerare anche i testi dei commenti.
-
-
+Il valore aggiunto di una metrica è da attribuire a logiche di business in base alla specifica interpretazione e conoscenza che si ha degli argomenti.
 

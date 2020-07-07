@@ -8,19 +8,21 @@
 %************************************************
 
 % sviluppi futuri
-L'implementazione del mining degli argumentation framework e del sistema prolog per il ranking delle estensioni presentano molti margini di miglioramento, fra i quali possiamo distinguere in 
+L'implementazione del sistema di Argumentation Mining e del sistema prolog per il ranking delle estensioni è stata soggetta a molte scelte dovute allo stato dell'arte del periodo di sviluppo e ad uno stampo generale che si è voluto dare alle due parti del progetto. Con l'evoluzione delle tecniche e tramite applicazione del sistema ad un caso reale è possibile prendere scelte più ponderate ed adatte al contesto. Così come ampliare la scelta di metriche e fonti dati da cui attingere per la creazione del grafo di argomenti.
 
 
 \section{Mining}
 \label{section:ranking}
-Estrarre l'albero della conversazione o il grafo degli utenti può essere ampliato alla analisi di altri social media od addirittura all'estrazione di argomenti da altre fonti web o no. Un'idea potrebbe essere trovare un fonte dati con delle caratteristiche per le quali la creazione del grafo sia implicita nella struttura degli argomenti. I social media presentano una grande opportunità però per motivi di visualizzazione spesso impongono dei vincolo nella struttura dei commenti. 
 
-\subsection {Migliorare generazioni pesi delle relazioni} 
-I pesi delle relazioni sono in funzione del sentiment e della similarità dei testi dei due commenti che uniscono. In questo caso è stato utilizzato vader \cite{hutto2014vader} come sentiment analyzer perchè trainato sui social network, ma questo potrebbe cambiare in base alla fonte dati.
+\subsection {Fonti} 
+I social media rappresentano una fonte importante per l'Argumentation Mining, l'aggiunta di altre fonti potrebbe essere guidato da caratteristiche specifiche offerte dalle specifiche piattaforme. I social media presentano una grande opportunità però per motivi di visualizzazione spesso impongono dei vincolo nella struttura dei commenti. Potrebbe essere utile esplorare l'estrazione di argomenti da altre fonti web o in genere testuali. Un'idea potrebbe essere trovare un fonte dati con delle caratteristiche per le quali la creazione del grafo emerga ed abbia valore all'interno di un contesto di analisi, nei testi di un decreto o di una causa legale.
 
-La similarità invece è calcolata tramite la creazione di word embedding delle parole attraverso l'algoritmo word2vec \cite{} ed in seguito attraverso la creazione di embedding per l'intero testo attraverso la medie degli embedding delle parole. Questo porta a considerare simili testi che contengono parole simili attraverso la distributional semantic ovvero utilizzate in contesti simili.
+\subsection {Generazioni pesi delle relazioni} 
+I pesi delle relazioni sono in funzione del sentiment e della similarità dei testi dei due commenti della relazione. In questo caso è stato utilizzato vader \cite{hutto2014vader} come sentiment analyzer perchè trainato sui social network, ma questo potrebbe cambiare in base alla fonte dati.
 
-L'introduzi
+La similarità invece è calcolata tramite la creazione di word embedding delle parole attraverso l'algoritmo word2vec \cite{} ed in seguito attraverso la creazione di embedding per l'intero testo attraverso la media degli embedding delle parole. Questo porta a considerare simili testi che contengono parole simili attraverso la Distributional Semantic ovvero utilizzate in contesti simili.
+
+L'introduzione di nuovi algoritmi allo stato dell'arte per il language modeling potrebbe portare miglioramenti nel comprensione del significato della frase e di conseguenza in una più accurata generazione di relazioni e pesi. In particolar modo ELMo \cite{elmo} e BERT \cite{bert} possono essere addestrati ed utilizzati per estrarre rappresentazioni vettoriali delle frasi.
 
 
 
@@ -35,11 +37,10 @@ L'introduzi
 
 \subsection {Nuove funzioni di ranking}
 
-\subsubsection {Node related}
-\subsubsection {Graph related}
-\subsubsection {Testo dei nodi related}
+Sempre nell'ambito della elaborazione dei testi, ELMo \cite{elmo} e BERT \cite{bert} possono essere utilizzati per produrre nuove metriche prendendo in considerazione i testi dei commenti all'interno della stessa estensione, dando valore maggiore alle estensioni con argomenti con testi simili tra di loro.
 
+La topologia del grafo può essere utilizzata attraverso la scoperta di cluster con algoritmi di Clustering / community detection ed in seguito utilizzarli come ground truth per calcolare metriche come la homogeneity, completeness fra i cluster e le estensioni. 
 
+Ci sono molte metriche provenienti dalla graph theory che possono essere implementate, così come il calcolo del page rank potrebbe essere utile in alcuni contesti applicativi.
 
-
-
+L'effettiva utilità di queste funzioni di scoring rimane comunque da valutare in base al caso in esame. Alcune potrebbero essere puramente teoriche senza avere un riscontro effettivo nel preferire un estensione rispetto ad un altra.

@@ -1,0 +1,24 @@
+% !TEX encoding = UTF-8
+% !TEX TS-program = pdflatex
+% !TEX root = ../Tesi.tex
+% !TEX spellcheck = it-IT
+
+%************************************************
+
+%************************************************
+
+
+Per l'utilizzo del modulo python di mining è disponibile un repository github all'indirizzo \url{https://github.com/chrisPiemonte/argonaut} contenente un README.md dove viene spiegato l'utilizzo e l'installazione del modulo. Per la parte di mining è disponibile uno script da configurare cambiando i parametri in base alla fonte dati da cui attingere per costruire il grafo di argomenti.
+
+Per il calcolo delle estensioni ed i loro ranking tramite il sistema prolog invece, il repository contiene tutto il necessario per il ranking delle estensioni tranne però il sistema Arguer per la generazione delle estensioni, che deve essere reperito a parte. Per l'utilizzo basta lanciare il file in \textbf{src/reasoner/argonaut} ed eseguire il predicato \textbf{argonaut}. Comparirà da linea di comando un menù per il caricamento, la generazione delle estensioni e per la loro valutazione.
+
+
+
+Nel presente lavoro è stato proposto un sistema di argumentation mining in grado di costruire argumentation framework da conversazioni estratte dai social media ed un sistema prolog in grado di generare estensioni - Arguer - ed ordinarle per importanza - Argonaut, secondo delle metriche.
+
+Il mining proposto è stato implementato per tre diversi social media, ma le fonti da cui attingere potrebbero essere molte altre, a suggerire ampi margini di miglioramento e di estensione. Così come la creazione e di nuove metriche per la valutazione secondo logiche derivate dal contesto applicativo delle estensioni.
+
+Tale aspetto può rappresentare uno spunto per investigare sulla possibilità di utilizzare tecniche più raffinate ed allo stato dell'arte per migliorare i vari passaggi proposti nelle due macro-aree.
+
+
+

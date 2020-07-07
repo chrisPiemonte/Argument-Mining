@@ -12,7 +12,7 @@ Segue un overview del metodo utilizzato in sezione \ref{section:approcci} e degl
 
 \section{Metodologie di Mining}
 \label{section:approcci}
-L'estrazione di argomenti è caratterizzata dalla struttura che i commenti in uno specifico Social Network possono assumere. In tutte le fonti analizzate un commento può considerarsi una risposta ad un solo altro commento, formando una struttura ad albero che, partendo dal nodo radice, si dirama attraverso relazioni di risposta, di solito con profondità massima imposta a priori dallo specifico social media. Di seguito viene descritta l'estrazione dell'albero dei commenti in sezione \ref{subsection:albero_commenti} ed un tentativo di estrazione di un grafo considerando come nodi gli utenti in sezione \ref{subsection:grafo_utenti}.
+L'estrazione di argomenti è caratterizzata dalla struttura che i commenti in uno specifico Social Network possono assumere. In tutte le fonti analizzate un commento può considerarsi una risposta ad un solo altro commento, formando una struttura ad albero che, partendo dal nodo radice, si dirama attraverso relazioni di risposta, di solito con profondità massima imposta a priori dallo specifico social media. Di seguito viene descritta l'estrazione dell'albero dei commenti in sezione \ref{subsection:albero_commenti} ed un metodo di estrazione di un grafo considerando come nodi gli utenti in sezione \ref{subsection:grafo_utenti}.
 
 \subsection{Albero dei commenti}
 \label{subsection:albero_commenti}
@@ -31,7 +31,7 @@ Estrarre delle semantiche da Argumentation Framework ricavati dall'albero della 
 
 \subsection{Grafo degli utenti}
 \label{subsection:grafo_utenti}
-Invece di considerare i commenti come argomenti, può essere considerato argomento ogni utente nella conversazione, e creare archi tra due utenti se un utente ha risposto almeno una volta ad un altro utente. Più formalmente costruire un grafo orientato $\mathcal{G = ⟨V, E⟩}$, dove i nodi $v \in \mathcal{V}$ sono utenti ed esiste un arco $(v_1,v_2) \in \mathcal{E}$ se l'utente $v_1$ ha risposto almeno una volta all'utente $v_2$.
+Invece di considerare i commenti come argomenti, può essere considerato argomento ogni utente nella conversazione, andando a creare archi tra due utenti se un utente ha risposto almeno una volta ad un altro utente. Più formalmente costruire un grafo orientato $\mathcal{G = ⟨V, E⟩}$, dove i nodi $v \in \mathcal{V}$ sono utenti ed esiste un arco $(v_1,v_2) \in \mathcal{E}$ se l'utente $v_1$ ha risposto almeno una volta all'utente $v_2$.
 
 In questo modo se ogni commento nell'albero della conversazione ha un utente univoco, l'Argumentation Framework risultante sarà comunque un albero, mentre se un utente risponde ad almeno due (o più) utenti il suo nodo nell'$AF$ avrà due (o più) archi uscenti, e se più commenti dello stesso utente vengono risposti da due (o più) utenti, il suo nodo nell'$AF$ avrà due (o più) archi entranti.
 
@@ -46,7 +46,7 @@ Estrarre delle semantiche da Argumentation Framework ricavati dal grafo degli ut
 
 \subsection{Pesi delle relazioni}
 \label{subsection:weight}
-Le relazioni di risposta nell'albero dei commenti possono essere pesate in base alla combinazione di similarità e sentiment dei testi dei commenti della relazione.
+Le relazioni di risposta nell'albero dei commenti possono essere pesate in base alla combinazione di similarità e sentiment dei testi dei commenti.
 
 \subsubsection{Similarity}
 La \textit{similarity} è ricavata attraverso l'embedding dei testi dei commenti ricavati da un modello di Word2Vec pre-addestrato sulle news di Google \cite{googlenewsmodel}. Gli Word Embedding sono un insieme di tecniche per la rappresentazione vettoriale delle parole di un vocabolario, introdotti per la prima volta in \cite{mikolov2013distributed}, i quali sono capaci di catturare il contesto delle parole all'interno di un documento attraverso la \textit{distributional semantics}. I vettori risultanti codificano proprietà linguistiche nello spazio vettoriale e nella distanza tra di essi, ad esempio è possibile fare analogie come mostrato in figura \ref{fig:analogy}.
@@ -64,7 +64,7 @@ $$cosineSimilarity(c_1, c_2) = \frac{c_1 \cdot c_2}{||c_1|| ||c_2||}$$
 che restituirà quindi un risultato compreso $\in [0, 1]$.
 
 \subsubsection{Sentiment}
-La \textit{sentiment analysis} si riferisce all'utilizzo dell'elaborazione del linguaggio naturale per identificare, estrarre e quantificare sistematicamente informazioni soggettive. L'analisi del sentiment è ampiamente applicata per analizzare social media per una varietà di applicazioni. Il valore è ricavato attraverso VADER \cite{hutto2014vader} uno strumento di analisi del sentiment basato su regole che è ideato specificamente per individuare la polarità nei testi espressi nei social media, ad esempio:
+La \textit{sentiment analysis} si riferisce all'utilizzo dell'elaborazione del linguaggio naturale per identificare, estrarre e quantificare sistematicamente informazioni soggettive. L'analisi del sentiment è ampiamente applicata per analizzare social media per una varietà di applicazioni. Il valore è ricavato attraverso VADER \cite{hutto2014vader} uno strumento di analisi del sentiment basato su regole che è stato ideato specificamente per individuare la polarità nei testi espressi nei social media, ad esempio:
 
     $$sentiment(\ "\textbf{:)}" \ ) = 0.4588$$
     $$sentiment(\ "\textbf{:(}" \ ) = -0.4404$$
@@ -72,13 +72,13 @@ La \textit{sentiment analysis} si riferisce all'utilizzo dell'elaborazione del l
 che restituirà quindi un risultato compreso $\in [-1, 1]$.
 
 \subsubsection{Peso finale}
-Il peso finale dell'arco è ottenuto prendendo in considerazione la similarità tra i commenti, in modo da pesare di più commenti che parlano dello stesso argomento e di meno commenti che parlano di argomenti diversi, ed il sentiment in modo da capire se i commenti sono in accordo o in disaccordo attraverso:
+Il peso finale dell'arco è ottenuto prendendo in considerazione la similarità tra i commenti, in modo da da dare un valore maggiore a commenti simili e minore a commenti con similarità bassa, ed il sentiment. Se la polarità dei sentiment dei due commenti è la stessa allora è possibile dedurre che i commenti sono in accordo tra loro. Più precisamente:
 
 $$weight = similarity_{c_1 c_2} \cdot sentiment_{c_1} \cdot sentiment_{c_2}$$
 
 che restituirà quindi un risultato compreso $\in [-1, 1]$.
 
-Dal segno del peso finale è possibile dedurre il tipo di relazione per Bipolar AF e per Bipolar Weighted AF. Sarà creata una relazione di \textbf{supporto} se il segno sarà positivo, di \textbf{attacco} altrimenti. 
+Dal segno del peso finale è possibile dedurre il tipo di relazione per Bipolar AF e per Bipolar Weighted AF. Sarà creata una relazione di \textbf{supporto} se il segno è positivo, di \textbf{attacco} altrimenti. 
 
 \section{Analisi dei Social Media}
 \label{section:data_sources}
@@ -150,7 +150,7 @@ Anche qui si ripropongono i problemi presentati nella sezione precedente \ref{ri
 
 
 \subsection {Stackoverflow} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Attraverso la libreria Stack API \cite{stackapi} è possibile fare richieste, tramite pyhton, alle API di stackOverflow senza necessità di registrarsi.
+Attraverso la libreria Stack API \cite{stackapi} è possibile fare richieste, tramite pyhton, alle API di Stackoverflow senza necessità di registrarsi.
 
 \subsubsection {API}
 
@@ -264,7 +264,7 @@ Per costruire l 'albero dei commenti è necessario:
     \item \textbf{Esplorare la submission}: Esplorare la submission costruendo l'albero
 \end{itemize}
 
-Reddit non pone limiti alla profondità dei commenti, di conseguenza l'albero non ha dimensioni prefissate
+Reddit non pone limiti alla profondità dei commenti, di conseguenza l'albero non ha dimensioni prefissate.
 
 \begin{figure}
     \includegraphics[width=\linewidth]{Immagini/reddit-comment-nesting.png}
